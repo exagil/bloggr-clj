@@ -4,4 +4,4 @@
 (defn handle [request]
   {:status 200
    :headers {"Content-Type" "application/json"}
-   :body "{}"})
+   :body "{\"response\":\"pong\"}"})
