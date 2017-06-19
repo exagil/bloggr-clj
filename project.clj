@@ -8,6 +8,6 @@
                  [ring/ring-mock "0.3.0"]
                  [ring/ring-jetty-adapter "1.2.1"]
                  [compojure "1.1.6"]]
-  :main ^:skip-aot bloggr-clj.core
   :target-path "target/%s"
+  :main ^:skip-aot bloggr-clj.core
   :profiles {:uberjar {:aot :all}})

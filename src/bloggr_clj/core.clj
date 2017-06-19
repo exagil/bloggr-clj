@@ -1,7 +1,7 @@
 (ns bloggr-clj.core
   (:gen-class)
   (:use ring.adapter.jetty)
-  (:use bloggr-clj.ping))
+  (:use bloggr-clj.router))
 
 (defn -main [& args]
-  (run-jetty bloggr-clj.ping/handle {:port 3000}))
+  (run-jetty bloggr-clj.router/configured {:port 3000}))
