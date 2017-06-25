@@ -1,6 +1,7 @@
 (ns bloggr-clj.router
   (:gen-class)
   (:use bloggr-clj.ping)
+  (:use bloggr-clj.posts.handler)
   (:require [compojure.core :refer :all]
             [compojure.route :as route]))
 
@@ -11,4 +12,5 @@
 
 (defroutes configured
   (GET "/ping" [] bloggr-clj.ping/handle)
+  (GET "/posts/" [] bloggr-clj.posts.handler/all)
   (route/not-found handle-not-found))
