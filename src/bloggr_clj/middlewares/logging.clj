@@ -1,4 +1,4 @@
-(ns bloggr-clj.logging
+(ns bloggr-clj.middlewares.logging
   (:gen-class))
 
 (defn wrap-log-request [handler]

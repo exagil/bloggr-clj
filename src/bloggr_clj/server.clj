@@ -2,9 +2,9 @@
   (:gen-class)
   (:use ring.adapter.jetty)
   (:use bloggr-clj.router)
-  (:use bloggr-clj.logging))
+  (:require [bloggr-clj.middlewares.logging :as log-middleware]))
 
 (def app
   (-> bloggr-clj.router/configured
-      bloggr-clj.logging/wrap-log-request))
+      log-middleware/wrap-log-request))
 
