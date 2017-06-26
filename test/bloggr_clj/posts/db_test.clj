@@ -9,6 +9,10 @@
               :host "localhost"
               :user "chi6rag"})
 
+(def invalid-db-spec {:dbtype "postgresql"
+                      :dbname "invalid_db_name"
+                      :host "localhost"})
+
 (defn- once [fn]
   (jdbc/execute! db-spec "truncate table posts")
   (fn)
@@ -30,6 +34,9 @@
   (posts-db/save db-spec second-post)
   (posts-db/save db-spec third-post)
   (is (= (posts-db/fetch-all-posts db-spec) posts)))
+
+(deftest test-that-it-handles-database-errors-gracefully-while-fetching-posts
+  (is (= (posts-db/fetch-all-posts invalid-db-spec) '())))
 
 (use-fixtures :each each)
 (use-fixtures :once once)

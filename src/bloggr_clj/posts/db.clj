@@ -1,5 +1,6 @@
 (ns bloggr-clj.posts.db
   (:gen-class)
+  (:import (java.sql SQLException))
   (:require [clojure.java.jdbc :as jdbc]
             [bloggr-clj.posts.post :as post-record]))
 
@@ -7,8 +8,10 @@
   (post-record/->Post (:title post-row) (:body post-row)))
 
 (defn fetch-all-posts [db-spec]
-  (jdbc/query db-spec ["SELECT * FROM posts"]
-              {:row-fn process-fetched-post}))
+  (try
+    (jdbc/query db-spec ["SELECT * FROM posts"]
+              {:row-fn process-fetched-post})
+    (catch SQLException e '())))
 
 (defn save [db-spec post]
   (jdbc/insert! db-spec :posts post))
