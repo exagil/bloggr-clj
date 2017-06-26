@@ -7,6 +7,7 @@
                  [ring/ring-core "1.6.1"]
                  [ring/ring-mock "0.3.0"]
                  [ring/ring-jetty-adapter "1.2.1"]
+                 [org.clojure/java.jdbc "0.6.1"]
                  [compojure "1.1.6"]]
   :target-path "target/%s"
   :main ^:skip-aot bloggr-clj.core
