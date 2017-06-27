@@ -16,8 +16,8 @@
 
 (defn create [request]
   (let [post (json/read-str (slurp (:body request)))
-        successful-response "{\"status\":\"OK\",\"message\":\"Post created successfully\"}"
-        erreneous-response "{\"status\":\"InternalServerError\",\"message\":\"Failed to create post. Please try again after some time!\"}"]
+        successful-response "{\"message\":\"Post created successfully\"}"
+        erreneous-response "{\"message\":\"Failed to create post. Please try again after some time!\"}"]
   (if (posts-db/save db-spec post)
     {:status 200
      :headers {"Content-Type" "application/json"}

@@ -25,7 +25,7 @@
 
 (deftest test-that-post-is-created-successfully-when-a-valid-post-is-saved-successfully
   (with-redefs [posts-db/save (fn [db-spec posts] true)]
-    (let [expected-body "{\"status\":\"OK\",\"message\":\"Post created successfully\"}"]
+    (let [expected-body "{\"message\":\"Post created successfully\"}"]
     (def new-post-request (-> (ring.mock.request/request :post "/v1/posts/")
                           (ring.mock.request/content-type "application/json")
                           (ring.mock.request/body (json/write-str {:title "Sample Title" :body "Sample Body"}))))
@@ -36,7 +36,7 @@
 
 (deftest test-that-post-is-not-created-successfully-when-saving-it-failed-due-to-database-issues
   (with-redefs [posts-db/save (fn [db-spec post] false)]
-    (let [expected-body "{\"status\":\"InternalServerError\",\"message\":\"Failed to create post. Please try again after some time!\"}"
+    (let [expected-body "{\"message\":\"Failed to create post. Please try again after some time!\"}"
           new-post-request (-> (ring.mock.request/request :post "/v1/posts/")
                            (ring.mock.request/content-type "application/json")
                            (ring.mock.request/body (json/write-str {:title "Sample Title" :body "Sample Body"})))]
