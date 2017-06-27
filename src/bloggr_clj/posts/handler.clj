@@ -1,6 +1,7 @@
 (ns bloggr-clj.posts.handler
   (:gen-class)
   (:require [bloggr-clj.posts.db :as posts-db]
+            [bloggr-clj.response.simple :as simple-response]
             [clojure.data.json :as json]))
 
 (def db-spec {:dbtype "postgresql"
@@ -16,12 +17,8 @@
 
 (defn create [request]
   (let [post (json/read-str (slurp (:body request)))
-        successful-response "{\"message\":\"Post created successfully\"}"
-        erreneous-response "{\"message\":\"Failed to create post. Please try again after some time!\"}"]
+        successful-message "Post created successfully"
+        erreneous-message "Failed to create post. Please try again after some time!"]
   (if (posts-db/save db-spec post)
-    {:status 200
-     :headers {"Content-Type" "application/json"}
-     :body successful-response}
-    {:status 500
-     :headers {"Content-Type" "application/json"}
-     :body erreneous-response})))
+    (simple-response/respond-with 200 successful-message)
+    (simple-response/respond-with 500 erreneous-message))))
