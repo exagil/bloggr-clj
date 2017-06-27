@@ -8,7 +8,7 @@
 
 (deftest test-that-the-posts-collection-is-empty-when-no-posts-exist
   (with-redefs [posts-db/fetch-all-posts (fn [db-spec] '())]
-  (is (= (bloggr-clj.posts.handler/all (ring.mock.request/request :get "/posts/"))
+  (is (= (bloggr-clj.posts.handler/all (ring.mock.request/request :get "/v1/posts/"))
       {:status 200
       :headers {"Content-Type" "application/json"}
       :body "[]"}))))
@@ -17,9 +17,19 @@
   (def posts [(post-record/->Post "First Title" "First Body")
               (post-record/->Post "Second Title" "Second Body")])
   (with-redefs [posts-db/fetch-all-posts (fn [db-spec] posts)]
-    (def expected-body (json/write-str posts))
-    (is (= (bloggr-clj.posts.handler/all (ring.mock.request/request :get "/posts/"))
+    (let [expected-body (json/write-str posts)]
+    (is (= (bloggr-clj.posts.handler/all (ring.mock.request/request :get "/v1/posts/"))
         {:status 200
         :headers {"Content-Type" "application/json"}
-        :body expected-body}))))
+        :body expected-body})))))
 
+(deftest test-that-post-is-created-successfully-when-a-valid-post-is-saved-successfully
+  (with-redefs [posts-db/save (fn [db-spec posts] true)]
+    (let [expected-body "{\"status\":\"OK\",\"message\":\"Post created successfully\"}"]
+    (def new-post-request (-> (ring.mock.request/request :post "/v1/posts/")
+                          (ring.mock.request/content-type "application/json")
+                          (ring.mock.request/body (json/write-str {:title "Sample Title" :body "Sample Body"}))))
+    (is (= (bloggr-clj.posts.handler/create new-post-request)
+           {:status 200
+            :headers {"Content-Type" "application/json"}
+            :body expected-body})))))

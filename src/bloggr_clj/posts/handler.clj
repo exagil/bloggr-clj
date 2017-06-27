@@ -13,3 +13,9 @@
   {:status 200
    :headers {"Content-Type" "application/json"}
    :body (json/write-str fetched-posts)})
+
+(defn create [request]
+  (let [body "{\"status\":\"OK\",\"message\":\"Post created successfully\"}"]
+  {:status 200
+   :headers {"Content-Type" "application/json"}
+   :body body}))

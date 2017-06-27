@@ -12,5 +12,6 @@
 
 (defroutes configured
   (GET "/ping" [] bloggr-clj.ping/handle)
-  (GET "/posts/" [] bloggr-clj.posts.handler/all)
+  (GET "/v1/posts/" [] bloggr-clj.posts.handler/all)
+  (POST "/v1/posts/" [] bloggr-clj.posts.handler/create)
   (route/not-found handle-not-found))
