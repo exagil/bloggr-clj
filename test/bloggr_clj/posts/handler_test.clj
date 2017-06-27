@@ -33,3 +33,14 @@
            {:status 200
             :headers {"Content-Type" "application/json"}
             :body expected-body})))))
+
+(deftest test-that-post-is-not-created-successfully-when-saving-it-failed-due-to-database-issues
+  (with-redefs [posts-db/save (fn [db-spec post] false)]
+    (let [expected-body "{\"status\":\"InternalServerError\",\"message\":\"Failed to create post. Please try again after some time!\"}"
+          new-post-request (-> (ring.mock.request/request :post "/v1/posts/")
+                           (ring.mock.request/content-type "application/json")
+                           (ring.mock.request/body (json/write-str {:title "Sample Title" :body "Sample Body"})))]
+    (is (= (bloggr-clj.posts.handler/create new-post-request)
+           {:status 500
+            :headers {"Content-Type" "application/json"}
+            :body expected-body})))))

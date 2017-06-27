@@ -15,7 +15,13 @@
    :body (json/write-str fetched-posts)})
 
 (defn create [request]
-  (let [body "{\"status\":\"OK\",\"message\":\"Post created successfully\"}"]
-  {:status 200
-   :headers {"Content-Type" "application/json"}
-   :body body}))
+  (let [post (json/read-str (slurp (:body request)))
+        successful-response "{\"status\":\"OK\",\"message\":\"Post created successfully\"}"
+        erreneous-response "{\"status\":\"InternalServerError\",\"message\":\"Failed to create post. Please try again after some time!\"}"]
+  (if (posts-db/save db-spec post)
+    {:status 200
+     :headers {"Content-Type" "application/json"}
+     :body successful-response}
+    {:status 500
+     :headers {"Content-Type" "application/json"}
+     :body erreneous-response})))
