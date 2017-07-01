@@ -2,6 +2,7 @@
   (:gen-class)
   (:require [bloggr-clj.posts.db :as posts-db]
             [bloggr-clj.response.simple :as simple-response]
+            [ring.middleware.json :as ring-middleware-json]
             [clojure.data.json :as json]))
 
 (def db-spec {:dbtype "postgresql"
@@ -16,7 +17,7 @@
    :body (json/write-str fetched-posts)})
 
 (defn create [request]
-  (let [post (json/read-str (slurp (:body request)))
+  (let [post (:body request)
         successful-message "Post created successfully"
         erreneous-message "Failed to create post. Please try again after some time!"]
   (if (posts-db/save db-spec post)

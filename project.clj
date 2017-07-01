@@ -10,6 +10,7 @@
                  [org.clojure/java.jdbc "0.6.1"]
                  [org.postgresql/postgresql "42.1.1"]
                  [org.clojure/data.json "0.2.6"]
+                 [ring/ring-json "0.4.0"]
                  [compojure "1.1.6"]]
   :target-path "target/%s"
   :main ^:skip-aot bloggr-clj.core
