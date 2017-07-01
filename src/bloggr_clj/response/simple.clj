@@ -6,3 +6,8 @@
   {:status code
    :headers {"Content-Type" "application/json"}
    :body (json/write-str {:message message})})
+
+(defn bad []
+  {:status 400
+   :headers {"Content-Type" "application/json"}
+   :body (json/write-str {:message "Bad Request"})})
