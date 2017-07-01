@@ -6,3 +6,7 @@
 (deftest test-that-post-has-no-errors-when-details-are-valid
   (let [post (post-record/->Post "Valid Title" "Valid Message")]
   (is (= [] (post-record/errors post)))))
+
+(deftest test-that-post-has-a-title-blank-error-when-it-is-blank
+  (let [post (post-record/->Post "" "Valid Message")]
+  (is (= ["Title is blank"] (post-record/errors post)))))
