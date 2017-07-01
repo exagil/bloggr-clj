@@ -7,7 +7,7 @@
             [bloggr-clj.response.simple :as simple-response]))
 
 (def app
-  (-> bloggr-clj.router/configured
-      (ring-middleware-json/wrap-json-body {:malformed-response (simple-response/bad)})
-      log-middleware/wrap-log-request))
+  (let [handler (-> bloggr-clj.router/configured
+                    log-middleware/wrap-log-request)]
+  (ring.middleware.json/wrap-json-body handler {:keywords? true})))
 
