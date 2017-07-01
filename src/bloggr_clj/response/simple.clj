@@ -2,12 +2,14 @@
   (:gen-class)
   (:require [clojure.data.json :as json]))
 
-(defn respond-with [code message]
+(defn- response [code message]
   {:status code
    :headers {"Content-Type" "application/json"}
    :body (json/write-str {:message message})})
 
+(defn respond-with [code message]
+  (response code message))
+
 (defn bad []
-  {:status 400
-   :headers {"Content-Type" "application/json"}
-   :body (json/write-str {:message "Bad Request"})})
+  (response 400 "Bad Request"))
+
