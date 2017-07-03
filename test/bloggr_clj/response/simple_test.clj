@@ -12,3 +12,10 @@
   (is (= {:status 400
           :headers {"Content-Type" "application/json"}
           :body "{\"message\":\"Bad Request\"}"} (simple-response/bad))))
+
+(deftest test-that-it-knows-about-handling-error-messages
+  (is (= {:status 422
+          :headers {"Content-Type" "application/json"}
+          :body "{\"message\":\"Some Error\",\"errors\":[\"Error\"]}"}
+         (simple-response/respond-with 422 "Some Error" ["Error"]))))
+
