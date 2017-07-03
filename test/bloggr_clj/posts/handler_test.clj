@@ -46,7 +46,7 @@
   (is (= expected-body (get-in response [:response :body]))))))
 
 (deftest test-that-post-is-not-created-when-erroneous
-  (let [expected-body "{\"message\":\"Failed to create post.\"}"
+  (let [expected-body "{\"message\":\"Failed to create post.\",\"errors\":[\"Title is blank\",\"Body is blank\"]}"
         response (-> (session bloggr-clj.server/app)
                      (request "/v1/posts/" :request-method :post
                                            :body (json/write-str {:title "" :body ""})

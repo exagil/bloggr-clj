@@ -29,6 +29,6 @@
         post (post-record/->Post (:title post-request) (:body post-request))
         errors (post-record/errors post)]
   (if-not (empty? errors)
-    (simple-response/respond-with 422 "Failed to create post.")
+    (simple-response/respond-with 422 "Failed to create post." errors)
   (create-post post))))
 
