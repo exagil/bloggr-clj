@@ -15,11 +15,13 @@
 
 (defn save [db-spec post]
   (try
-    (:id (jdbc/insert! db-spec :posts post))
+    (:id (first (jdbc/insert! db-spec :posts post)))
     (catch SQLException e 0)))
 
 (defn delete [db-spec post-id]
   (try
-    (do (jdbc/delete! db-spec :posts ["id=?" post-id]) true)
-    (catch SQLException e 0)))
+    (do
+      (jdbc/execute! db-spec ["DELETE FROM posts WHERE id=?" post-id])
+      true)
+    (catch SQLException e false)))
 

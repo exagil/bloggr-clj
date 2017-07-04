@@ -13,6 +13,10 @@
                       :dbname "invalid_db_name"
                       :host "localhost"})
 
+(defn- assert-no-posts-exist []
+  (is (= 0
+         (:count (first (jdbc/query db-spec ["SELECT count(*) FROM posts"]))))))
+
 (defn- once [fn]
   (jdbc/execute! db-spec "truncate table posts")
   (fn)
@@ -48,8 +52,14 @@
 
 (deftest test-that-it-knows-how-to-delete-a-post-successfully
   (let [first-post (post-record/->Post "First Post Title" "First Post Body")
+        first-post-id (posts-db/save db-spec first-post)]
+  (is (= true (posts-db/delete db-spec first-post-id))))
+  (assert-no-posts-exist))
+
+(deftest test-that-it-knows-how-fail-gracefully-when-deletion-of-post-fails-due-to-db-error
+  (let [first-post (post-record/->Post "First Post Title" "First Post Body")
         first-post-id (:id (posts-db/save db-spec first-post))]
-  (is (= true (posts-db/delete db-spec first-post-id)))))
+  (is (= false (posts-db/delete invalid-db-spec first-post-id)))))
 
 (use-fixtures :each each)
 (use-fixtures :once once)
