@@ -46,5 +46,10 @@
   (def first-post (post-record/->Post "First Post Title" "First Post Body"))
   (is (not (= (posts-db/save db-spec first-post) 0))))
 
+(deftest test-that-it-knows-how-to-delete-a-post-successfully
+  (let [first-post (post-record/->Post "First Post Title" "First Post Body")
+        first-post-id (:id (posts-db/save db-spec first-post))]
+  (is (= true (posts-db/delete db-spec first-post-id)))))
+
 (use-fixtures :each each)
 (use-fixtures :once once)

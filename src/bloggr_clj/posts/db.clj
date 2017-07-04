@@ -18,3 +18,8 @@
     (:id (jdbc/insert! db-spec :posts post))
     (catch SQLException e 0)))
 
+(defn delete [db-spec post-id]
+  (try
+    (do (jdbc/delete! db-spec :posts ["id=?" post-id]) true)
+    (catch SQLException e 0)))
+
