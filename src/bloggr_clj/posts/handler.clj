@@ -22,7 +22,7 @@
         erreneous-message "Failed to create post. Please try again after some time!"
         saved-post-id (posts-db/save db-spec post)]
   (if (not (= saved-post-id 0))
-    (simple-response/respond-with 200 successful-message)
+    (simple-response/respond-with 200 successful-message [] {:id saved-post-id})
     (simple-response/respond-with 500 erreneous-message))))
 
 (defn create [request]

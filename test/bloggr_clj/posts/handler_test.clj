@@ -27,7 +27,7 @@
 
 (deftest test-that-post-is-created-successfully-when-a-valid-post-is-saved-successfully
   (with-redefs [posts-db/save (fn [db-spec posts] 1)]
-    (let [expected-body "{\"message\":\"Post created successfully\"}"
+    (let [expected-body "{\"message\":\"Post created successfully\",\"errors\":[],\"id\":1}"
           response (-> (session bloggr-clj.server/app)
                        (request "/v1/posts/" :request-method :post
                                              :body (json/write-str {:title "Sample Title" :body "Sample Body"})
