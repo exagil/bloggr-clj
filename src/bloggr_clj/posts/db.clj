@@ -15,8 +15,6 @@
 
 (defn save [db-spec post]
   (try
-    (do
-      (jdbc/insert! db-spec :posts post)
-      true)
-    (catch SQLException e false)))
+    (:id (jdbc/insert! db-spec :posts post))
+    (catch SQLException e 0)))
 

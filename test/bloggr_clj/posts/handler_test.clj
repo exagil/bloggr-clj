@@ -26,7 +26,7 @@
         :body expected-body})))))
 
 (deftest test-that-post-is-created-successfully-when-a-valid-post-is-saved-successfully
-  (with-redefs [posts-db/save (fn [db-spec posts] true)]
+  (with-redefs [posts-db/save (fn [db-spec posts] 1)]
     (let [expected-body "{\"message\":\"Post created successfully\"}"
           response (-> (session bloggr-clj.server/app)
                        (request "/v1/posts/" :request-method :post
@@ -36,7 +36,7 @@
   (is (= expected-body (get-in response [:response :body]))))))
 
 (deftest test-that-post-is-not-created-successfully-when-saving-it-failed-due-to-database-issues
-  (with-redefs [posts-db/save (fn [db-spec post] false)]
+  (with-redefs [posts-db/save (fn [db-spec post] 0)]
     (let [expected-body "{\"message\":\"Failed to create post. Please try again after some time!\"}"
           response (-> (session bloggr-clj.server/app)
                        (request "/v1/posts/" :request-method :post

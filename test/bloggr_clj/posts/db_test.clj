@@ -40,11 +40,11 @@
 
 (deftest test-that-it-does-not-save-post-in-case-of-db-error
   (def first-post (post-record/->Post "First Post Title" "First Post Body"))
-  (is (= (posts-db/save invalid-db-spec first-post) false)))
+  (is (= (posts-db/save invalid-db-spec first-post) 0)))
 
 (deftest test-that-it-knows-how-to-save-a-post
   (def first-post (post-record/->Post "First Post Title" "First Post Body"))
-  (is (= (posts-db/save db-spec first-post) true)))
+  (is (not (= (posts-db/save db-spec first-post) 0))))
 
 (use-fixtures :each each)
 (use-fixtures :once once)
