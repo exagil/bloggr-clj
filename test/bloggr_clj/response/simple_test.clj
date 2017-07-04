@@ -19,3 +19,9 @@
           :body "{\"message\":\"Some Error\",\"errors\":[\"Error\"]}"}
          (simple-response/respond-with 422 "Some Error" ["Error"]))))
 
+(deftest test-that-it-knows-about-extra-key-value-pairs
+  (is (= {:status 200
+          :headers {"Content-Type" "application/json"}
+          :body "{\"message\":\"Success\",\"errors\":[],\"key\":\"value\"}"}
+         (simple-response/respond-with 200 "Success" [] {:key "value"}))))
+
